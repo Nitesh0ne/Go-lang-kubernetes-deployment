@@ -13,16 +13,13 @@ pipeline{
     stages{
         stage('checkout'){
             steps{
-                sh 'git clone https://github.com/Nitesh0ne/GO-LANG-001.git'
+                git branch: 'main', url: 'https://github.com/Nitesh0ne/GO-LANG-001.git'
             }
         }
 
         stage ('Build Image'){
             steps{
-               sh '''
-                cd GO-LANG-001/
-                 docker build -t ${IMAGE_NAME}:{IMAGE_TAG} .
-                '''
+               sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
             }
         }
 
