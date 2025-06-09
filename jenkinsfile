@@ -2,7 +2,7 @@ pipeline{
     agent {label 'linux' }
 
     tools{
-        git 'Default-Git'
+        git 'Default'
     }
 
     environment {
