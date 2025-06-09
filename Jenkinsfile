@@ -10,7 +10,9 @@ pipeline{
         IMAGE_TAG  = "v${env.BUILD_NUMBER}"
         REGISTRY_CREDENTIALS = 'docker-hub-credentials'
         }
-   
+    stages{
+        
+
         stage ('Build Image'){
             steps{
                sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
