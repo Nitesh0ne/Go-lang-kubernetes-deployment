@@ -5,12 +5,13 @@ ENV CGO_ENABLED=0 GOOS=linux
 
 WORKDIR /opt
 
-# Copy go.mod and go.sum separately for better caching
-COPY go.mod  .
-RUN go mod download 
 
 # Copy source files
 COPY . .
+
+#download dependencies
+RUN go mod tidy 
+
 
 # Build the Go application
 RUN go build -v -o app ./cmd/web
