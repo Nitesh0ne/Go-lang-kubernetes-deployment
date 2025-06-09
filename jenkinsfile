@@ -1,6 +1,10 @@
 pipeline{
     agent {label 'linux' }
 
+    tools{
+        git 'Default-Git'
+    }
+
     environment {
         IMAGE_NAME = 'nitace/go-lang-app'
         IMAGE_TAG  = "v${env.BUILD_NUMBER}"
@@ -15,7 +19,7 @@ pipeline{
 
         stage ('Build Image'){
             steps{
-               sh 'docker build -t ${IMAGE_NAME:{IMAGE_TAG} .'
+               sh 'docker build -t ${IMAGE_NAME}:{IMAGE_TAG} .'
             }
         }
 
