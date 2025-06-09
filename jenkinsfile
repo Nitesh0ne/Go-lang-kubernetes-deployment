@@ -11,11 +11,7 @@ pipeline{
         REGISTRY_CREDENTIALS = 'docker-hub-credentials'
         }
     stages{
-        stage('checkout'){
-            steps{
-                git branch: 'main', url: 'https://github.com/Nitesh0ne/GO-LANG-001.git'
-            }
-        }
+       
 
         stage ('Build Image'){
             steps{
