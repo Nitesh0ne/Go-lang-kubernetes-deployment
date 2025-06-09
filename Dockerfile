@@ -13,7 +13,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN go build -v -o app /cmd/web
+RUN go build -v -o app ./cmd/web
 
 
 #Final Stage 
