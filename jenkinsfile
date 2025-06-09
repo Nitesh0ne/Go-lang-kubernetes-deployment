@@ -20,7 +20,7 @@ pipeline{
         stage ('Build Image'){
             steps{
                sh '''
-                cd GO-LANG-001/ 
+                cd GO-LANG-001/
                  docker build -t ${IMAGE_NAME}:{IMAGE_TAG} .
                 '''
             }
