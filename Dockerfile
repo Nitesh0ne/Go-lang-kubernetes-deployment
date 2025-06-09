@@ -1,6 +1,5 @@
 # Build Stage
-FROM golang:1.24-slim
-
+FROM golang
 #set environment variables 
 ENV CGO_ENABLED=0 GOOS=linux
 
