@@ -1,5 +1,5 @@
 # Build Stage
-FROM golang
+FROM golang as builder
 #set environment variables 
 ENV CGO_ENABLED=0 GOOS=linux
 
