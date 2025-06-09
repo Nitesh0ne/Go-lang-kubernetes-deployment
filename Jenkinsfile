@@ -10,13 +10,7 @@ pipeline{
         IMAGE_TAG  = "v${env.BUILD_NUMBER}"
         REGISTRY_CREDENTIALS = 'docker-hub-credentials'
         }
-    stages{
-        stage('checkout'){
-            steps{
-                git branch: 'main', url: 'https://github.com/Nitesh0ne/GO-LANG-001.git'
-            }
-        }
-
+   
         stage ('Build Image'){
             steps{
                sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
