@@ -2,19 +2,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: go-app
+  labels:
+    app: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: go-app
+      app: frontend
   template:
     metadata:
       labels:
-        app: go-app
+        app: frontend
+      annotations:
+        # prometheus.io/scrape: "true"
+        # prometheus.io/port: "4444"
+        # prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: go-app
-          image: nitace/go-lang-app:v5  # <-- Replace with your image
+          image: nitace/go-lang-app:v5  # Use a proper versioned image
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4444
           env:
@@ -23,3 +30,22 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: DB_DSN
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 4444
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 4444
+            initialDelaySeconds: 15
+            periodSeconds: 20
