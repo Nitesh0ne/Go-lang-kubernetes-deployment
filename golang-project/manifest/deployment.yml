@@ -3,24 +3,28 @@ kind: Deployment
 metadata:
   name: go-app
   labels:
-    app: frontend
+    app: go-app
+    tier: backend
+    environment: production
 spec:
-  replicas: 1
+  replicas: 2  # Recommended for HA in production
   selector:
     matchLabels:
-      app: frontend
+      app: go-app
   template:
     metadata:
       labels:
-        app: frontend
+        app: go-app
+        tier: backend
+        environment: production
       annotations:
-        # prometheus.io/scrape: "true"
-        # prometheus.io/port: "4444"
-        # prometheus.io/path: "/metrics"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4444"
+        prometheus.io/path: "/healthz"
     spec:
       containers:
         - name: go-app
-          image: nitace/go-lang-app:v5  # Use a proper versioned image
+          image: nitace/go-lang-app:v5
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4444
@@ -43,9 +47,15 @@ spec:
               port: 4444
             initialDelaySeconds: 5
             periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 2
           livenessProbe:
             httpGet:
               path: /healthz
               port: 4444
             initialDelaySeconds: 15
             periodSeconds: 20
+            failureThreshold: 3
+            timeoutSeconds: 2
+      terminationGracePeriodSeconds: 30  # Graceful shutdown
+      restartPolicy: Always
