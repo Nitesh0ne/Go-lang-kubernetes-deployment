@@ -24,8 +24,12 @@ spec:
     spec:
       containers:
         - name: go-app
+<<<<<<< Updated upstream
           image: nitace/go-lang-app:v5
           imagePullPolicy: IfNotPresent
+=======
+          image: nitace/go-lang-app:v5  
+>>>>>>> Stashed changes
           ports:
             - containerPort: 4444
           env:
