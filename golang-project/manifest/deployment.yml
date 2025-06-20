@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-app
+  template:
+    metadata:
+      labels:
+        app: go-app
+    spec:
+      containers:
+        - name: go-app
+          image: nitace/go-lang-app:v5  # <-- Replace with your image
+          ports:
+            - containerPort: 4444
+          env:
+            - name: DB_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: DB_DSN
