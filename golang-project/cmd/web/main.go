@@ -51,6 +51,7 @@ func run(logger *slog.Logger) error {
 	cfg.basicAuth.username = env.GetString("BASIC_AUTH_USERNAME", "admin")
 	cfg.basicAuth.hashedPassword = env.GetString("BASIC_AUTH_HASHED_PASSWORD", "$2a$10$jRb2qniNcoCyQM23T59RfeEQUbgdAXfR6S0scynmKfJa5Gj3arGJa")
 	cfg.db.dsn = env.GetString("DB_DSN", "user:pass@localhost:5432/db")
+	logger.Debug("Using DB DSN", "dsn", cfg.db.dsn)
 
 	showVersion := flag.Bool("version", false, "display version and exit")
 
