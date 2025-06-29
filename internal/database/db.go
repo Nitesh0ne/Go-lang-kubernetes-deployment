@@ -19,8 +19,8 @@ func New(dsn string) (*DB, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()
 
-	// db, err := sqlx.ConnectContext(ctx, "postgres", "postgres://"+dsn)
-	db, err := sqlx.ConnectContext(ctx, "postgres", dsn)
+	db, err := sqlx.ConnectContext(ctx, "postgres", "postgres://"+dsn)
+	// db, err := sqlx.ConnectContext(ctx, "postgres", dsn)
 	if err != nil {
 		return nil, err
 	}
