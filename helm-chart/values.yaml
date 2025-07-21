@@ -1,0 +1,38 @@
+replicaCount: 3
+image: 
+  repository: nitace/go-lang-app
+  tag: v8
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 4444
+
+postgres:
+  name: postgres
+  serviceName: postgres-headless
+  replicaCount: 3
+  image: postgres:15
+  secretName: postgres-secret
+  storage: 8Gi
+
+
+
+postgres:
+  name: postgres
+  serviceName: postgres-headless
+  replicaCount: 3
+  image: postgres:15
+  secretName: postgres-secret
+  storage: 8Gi
+  auth:
+    user: testuser
+    password: "1234"
+    database: testdb
+  dsnHost: postgres-0.postgres-headless.default.svc.cluster.local
+
+
+
+ingress:
+  enabled: true
+  host: "www.k8s.niteshnepali.com.np"  # Replace with your actual domain or IP

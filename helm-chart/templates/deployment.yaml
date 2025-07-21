@@ -1,0 +1,55 @@
+# templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deploy
+  labels:
+    env: production
+    tier: backend
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      env: production
+      tier: backend
+  template:
+    metadata:
+      labels:
+        env: production
+        tier: backend
+    spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z postgres-0.postgres-headless.default.svc.cluster.local 5432; do
+                echo "Waiting for Postgres TCP connection..."
+                sleep 3
+              done
+      dnsPolicy: ClusterFirst
+      containers:
+        - name: testcont
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 4444
+          env:
+            - name: DB_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: DB_DSN
+          readinessProbe:
+            tcpSocket:
+              port: 4444
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: 4444
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
