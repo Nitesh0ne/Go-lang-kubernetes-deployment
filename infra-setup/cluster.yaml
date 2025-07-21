@@ -1,0 +1,75 @@
+apiVersion: kops.k8s.io/v1alpha2
+kind: Cluster
+metadata:
+  creationTimestamp: "2025-06-30T16:38:19Z"
+  name: k8s.niteshnepali.com.np
+spec:
+  api:
+    loadBalancer:
+      class: Network
+      type: Public
+  authorization:
+    rbac: {}
+  channel: stable
+  cloudProvider: aws
+  configBase: s3://k8s.niteshnepali.com.np/k8s.niteshnepali.com.np
+  dnsZone: niteshnepali.com.np
+  etcdClusters:
+  - cpuRequest: 200m
+    etcdMembers:
+    - encryptedVolume: true
+      instanceGroup: control-plane-ap-south-1a
+      name: a
+    manager:
+      backupRetentionDays: 90
+    memoryRequest: 100Mi
+    name: main
+  - cpuRequest: 100m
+    etcdMembers:
+    - encryptedVolume: true
+      instanceGroup: control-plane-ap-south-1a
+      name: a
+    manager:
+      backupRetentionDays: 90
+    memoryRequest: 100Mi
+    name: events
+  iam:
+    allowContainerRegistry: true
+    legacy: false
+  kubelet:
+    anonymousAuth: false
+  kubernetesApiAccess:
+  - 0.0.0.0/0
+  - ::/0
+  kubernetesVersion: 1.32.4
+  masterPublicName: api.k8s.niteshnepali.com.np
+  networkCIDR: 172.20.0.0/16
+  networking:
+    calico: {}
+  nonMasqueradeCIDR: 100.64.0.0/10
+  sshAccess:
+  - 0.0.0.0/0
+  - ::/0
+  subnets:
+  - cidr: 172.20.64.0/18
+    name: ap-south-1a
+    type: Private
+    zone: ap-south-1a
+  - cidr: 172.20.128.0/18
+    name: ap-south-1b
+    type: Private
+    zone: ap-south-1b
+  - cidr: 172.20.0.0/21
+    name: utility-ap-south-1a
+    type: Utility
+    zone: ap-south-1a
+  - cidr: 172.20.8.0/21
+    name: utility-ap-south-1b
+    type: Utility
+    zone: ap-south-1b
+  topology:
+    bastion:
+      enable: True
+      bastionPublicName: bastion.k8s.niteshnepali.com.np
+    dns:
+      type: Public
